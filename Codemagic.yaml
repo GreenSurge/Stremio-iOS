@@ -1,1 +1,17 @@
-
+workflows:
+  ios-build:
+    name: iOS Build
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      vars:
+        XCODE_PROJECT: "stremioios.xcodeproj"  # Change to .xcworkspace if using CocoaPods
+        XCODE_SCHEME: "stremioios"  # Replace with your actual scheme name
+    scripts:
+      - name: Install dependencies
+        script: |
+          brew install cocoapods
+          pod install
+      - name: Build iOS app
+        script: |
+          xcodebuild -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -sdk iphoneos
